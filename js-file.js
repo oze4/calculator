@@ -65,24 +65,25 @@ function operate () {
     }
     else if (operator === "+") {
       result += (num1 + num2)
-      firstNumber = result
-      monitor.value = firstNumber
+     
     }
     else if (operator === "-") {
       result += (num1 - num2)
-      firstNumber = result
-      monitor.value = firstNumber
     }
     else if (operator === "*") {
       result += (num1 * num2)
-      firstNumber = result
-      monitor.value = firstNumber
+      
     }
     else if (operator === "/") {
       result += (num1 / num2)
-      firstNumber = result
-      monitor.value = firstNumber
+      
     }
+    if (result.toString().length > 15) {
+      result = parseFloat(result).toExponential(3);
+  }
+    firstNumber = result
+    monitor.value = firstNumber
+    
     operator = ""
     secondNumber= ""
     resultCalculated = true

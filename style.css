@@ -92,5 +92,5 @@ body {
 }
 
 input::placeholder {
-    font: 1.50rem/3 sans-serif;
+    font: 1.50rem/3 "Roboto";
 }
