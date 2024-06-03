@@ -9,12 +9,12 @@ const numbers = document.querySelectorAll("[data-numero]")
 numbers.forEach((number) => {
     number.addEventListener("click", () => {
       const numero =  number.getAttribute('data-numero')
-      if (!resultCalculated){
+      if (!resultCalculated && firstNumber.length < 16){
       if (operator === ""){
         firstNumber += numero
         monitor.value = firstNumber
       }}
-        if (operator != ""){
+        if (operator != "" && secondNumber.length < 16){
         secondNumber += numero
         monitor.value = secondNumber
       }
@@ -38,14 +38,14 @@ signs.forEach((sign) => {
 
   const decimale = document.querySelector("#decimal")
   decimale.addEventListener('click', () => {
-    if (operator === '') {
+    if (operator === '' && firstNumber != "" ) {
       if (!firstNumber.includes('.')) {
         firstNumber += '.';
         monitor.value = firstNumber
 
       }
     } else {
-      if (!secondNumber.includes('.')) {
+      if (!secondNumber.includes('.') && secondNumber != "") {
         secondNumber += '.';
         monitor.value = secondNumber
       }
