@@ -3,6 +3,7 @@ const monitor = document.querySelector("#schermo")
 let firstNumber = "";
 let operator = "";
 let secondNumber = "";
+let resultCalculated = false
 
 const numbers = document.querySelectorAll("[data-numero]")
 numbers.forEach((number) => {
@@ -83,4 +84,29 @@ function operate () {
     }
     operator = ""
     secondNumber= ""
+    resultCalculated = true
   }
+
+  const ac = document.querySelector("#reset")
+  ac.addEventListener("click", function (){
+    resultCalculated = false
+    firstNumber = ""
+    operator = ""
+    secondNumber = ""
+    monitor.value = firstNumber
+  })
+
+  const canc = document.querySelector("#canc")
+  canc.addEventListener("click", function(){
+    if (!resultCalculated) { 
+    if (operator == "" && firstNumber != ""){
+    firstNumber = firstNumber.slice(0, -1)
+    monitor.value = firstNumber
+    }
+  }
+     if (operator != "" && secondNumber != ""){
+      secondNumber = secondNumber.slice(0, -1)
+      monitor.value = secondNumber
+    }
+  })
+  

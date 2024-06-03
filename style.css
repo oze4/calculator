@@ -90,3 +90,7 @@ body {
     background-color: #ccc;
     transform: translateY(2px);
 }
+
+input::placeholder {
+    font: 1.50rem/3 sans-serif;
+}
