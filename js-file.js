@@ -26,8 +26,22 @@ signs.forEach((sign) => {
       if(firstNumber != ""){
         operator = segno
       }
-       
     })
   })  
 
-  
+  const decimale = document.querySelector("#decimale")
+  decimale.addEventListener('click', () => {
+    if (operator === '') {
+      if (!firstNumber.includes('.')) {
+        firstNumber += '.';
+        monitor.value = firstNumber
+
+      }
+    } else {
+      if (!secondNumber.includes('.')) {
+        secondNumber += '.';
+        monitor.value = secondNumber
+      }
+    }
+  })
+
