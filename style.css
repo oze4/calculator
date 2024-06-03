@@ -55,7 +55,7 @@ body {
     color: white;
 }
 
-#uguale {
+#equal {
     background-color: #4caf50;
     color: white;
     width: 48%;
@@ -80,7 +80,7 @@ body {
     background-color: #bd2a2a;
 }
 
-#uguale:hover {
+#equal:hover {
     background-color: #449d48;
 
 }

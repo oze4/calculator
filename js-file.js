@@ -23,13 +23,18 @@ numbers.forEach((number) => {
 signs.forEach((sign) => {
     sign.addEventListener("click", () => {
       const segno =  sign.getAttribute('data-segno')
-      if(firstNumber != ""){
+      if(firstNumber != "" && operator != "" && secondNumber !="" ){
+        operate()
+        operator += segno
+      }
+      else if(firstNumber != "" ){
         operator = segno
+        
       }
     })
   })  
 
-  const decimale = document.querySelector("#decimale")
+  const decimale = document.querySelector("#decimal")
   decimale.addEventListener('click', () => {
     if (operator === '') {
       if (!firstNumber.includes('.')) {
@@ -45,3 +50,37 @@ signs.forEach((sign) => {
     }
   })
 
+  const equal = document.querySelector("#equal")
+equal.addEventListener("click", operate)
+  
+function operate () {
+    let result = ""
+    const num1 = parseFloat(firstNumber)
+    const num2 = parseFloat(secondNumber)
+    
+    if (operator === "" || secondNumber === ""){
+      return
+    }
+    else if (operator === "+") {
+      result += (num1 + num2)
+      firstNumber = result
+      monitor.value = firstNumber
+    }
+    else if (operator === "-") {
+      result += (num1 - num2)
+      firstNumber = result
+      monitor.value = firstNumber
+    }
+    else if (operator === "*") {
+      result += (num1 * num2)
+      firstNumber = result
+      monitor.value = firstNumber
+    }
+    else if (operator === "/") {
+      result += (num1 / num2)
+      firstNumber = result
+      monitor.value = firstNumber
+    }
+    operator = ""
+    secondNumber= ""
+  }
