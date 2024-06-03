@@ -1,21 +1,33 @@
 const monitor = document.querySelector("#schermo")
 
 let firstNumber = "";
-let sign = "";
+let operator = "";
 let secondNumber = "";
 
 const numbers = document.querySelectorAll("[data-numero]")
 numbers.forEach((number) => {
     number.addEventListener("click", () => {
       const numero =  number.getAttribute('data-numero')
-      if (sign === ""){
+      if (operator === ""){
         firstNumber += numero
         monitor.value = firstNumber
       }
-      else if (sign != ""){
+      else if (operator != ""){
         secondNumber += numero
         monitor.value = secondNumber
       }
     });
   });
 
+  const signs = document.querySelectorAll("[data-segno]")
+signs.forEach((sign) => {
+    sign.addEventListener("click", () => {
+      const segno =  sign.getAttribute('data-segno')
+      if(firstNumber != ""){
+        operator = segno
+      }
+       
+    })
+  })  
+
+  
