@@ -9,11 +9,12 @@ const numbers = document.querySelectorAll("[data-numero]")
 numbers.forEach((number) => {
     number.addEventListener("click", () => {
       const numero =  number.getAttribute('data-numero')
+      if (!resultCalculated){
       if (operator === ""){
         firstNumber += numero
         monitor.value = firstNumber
-      }
-      else if (operator != ""){
+      }}
+        if (operator != ""){
         secondNumber += numero
         monitor.value = secondNumber
       }
@@ -26,7 +27,7 @@ signs.forEach((sign) => {
       const segno =  sign.getAttribute('data-segno')
       if(firstNumber != "" && operator != "" && secondNumber !="" ){
         operate()
-        operator += segno
+        operator = segno
       }
       else if(firstNumber != "" ){
         operator = segno
@@ -110,3 +111,54 @@ function operate () {
     }
   })
   
+  document.addEventListener('keydown', (event) => {
+    if (event.key >= '0' && event.key <= '9') {
+      if (!resultCalculated){
+        if (operator === ""){
+          firstNumber += event.key
+          monitor.value = firstNumber
+        }}
+          if (operator != ""){
+          secondNumber += event.key
+          monitor.value = secondNumber
+        }
+    }
+     else if (['+', '-', '*', '/'].includes(event.key)) {
+      if(firstNumber != "" && operator != "" && secondNumber !="" ){
+        operate()
+        operator = event.key
+      }
+      else if(firstNumber != "" ){
+        operator = event.key
+        
+      }
+    } else if (event.key === '.') {
+      if (operator === '') {
+        if (!firstNumber.includes('.')) {
+          firstNumber += '.';
+          monitor.value = firstNumber
+  
+        }
+      } else {
+        if (!secondNumber.includes('.')) {
+          secondNumber += '.';
+          monitor.value = secondNumber
+        }
+     } 
+    }
+    else if (event.key === 'Enter') {
+      operate();
+    } 
+    else if (event.key === 'Backspace') {
+      if (!resultCalculated) { 
+        if (operator == "" && firstNumber != ""){
+        firstNumber = firstNumber.slice(0, -1)
+        monitor.value = firstNumber
+        }
+      }
+         if (operator != "" && secondNumber != ""){
+          secondNumber = secondNumber.slice(0, -1)
+          monitor.value = secondNumber
+        }
+    }
+  });
