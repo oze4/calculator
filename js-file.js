@@ -3,7 +3,7 @@ const monitor = document.querySelector("#schermo")
 let firstNumber = "";
 let operator = "";
 let secondNumber = "";
-let resultCalculated = false
+let resultCalculated = false ;
 
 const numbers = document.querySelectorAll("[data-numero]")
 numbers.forEach((number) => {
@@ -56,7 +56,9 @@ signs.forEach((sign) => {
 equal.addEventListener("click", operate)
   
 function operate () {
+    
     let result = ""
+
     const num1 = parseFloat(firstNumber)
     const num2 = parseFloat(secondNumber)
     
@@ -75,9 +77,21 @@ function operate () {
       
     }
     else if (operator === "/") {
-      result += (num1 / num2)
-      
+      if (num1 == 0 && num2 == 0) { 
+        reset()
+        monitor.value = "Math Error"
+        return
+        }
+      else if (num1 != 0 && num2 == 0) {
+        reset()
+        monitor.value = "It Hurts."
+        return
+      }
+      else {
+        result += (num1 / num2)
+      }
     }
+
     if (result.toString().length > 15) {
       result = parseFloat(result).toExponential(3);
   }
@@ -89,14 +103,16 @@ function operate () {
     resultCalculated = true
   }
 
-  const ac = document.querySelector("#reset")
-  ac.addEventListener("click", function (){
+  function reset () {
     resultCalculated = false
     firstNumber = ""
     operator = ""
     secondNumber = ""
     monitor.value = firstNumber
-  })
+  }
+
+  const ac = document.querySelector("#reset")
+  ac.addEventListener("click", reset)
 
   const canc = document.querySelector("#canc")
   canc.addEventListener("click", function(){
