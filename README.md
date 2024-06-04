@@ -6,7 +6,7 @@ It can be controlled by a mouse or by a keyboard.
 
 ## Features
 
-* All basic operations are supported (divide, multiple, remainder, add, subtract).
+* All basic operations are supported (divide, multiple, add, subtract).
 * Keyboard inputs are supported for numbers, opertaors and other options.
 * Comes with options to __clear/delete__ a single input (backspace) OR __clear__ the whole display.
 
