@@ -81,7 +81,7 @@ function operate () {
     if (result.toString().length > 15) {
       result = parseFloat(result).toExponential(3);
   }
-    firstNumber = result
+    firstNumber = (parseFloat(result)).toString();
     monitor.value = firstNumber
     
     operator = ""

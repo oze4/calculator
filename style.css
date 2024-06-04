@@ -59,7 +59,7 @@ body {
 #equal {
     background-color: #4caf50;
     color: white;
-    width: 48%;
+    width: 74%;
 }
 
 #reset, #canc {
@@ -89,7 +89,7 @@ body {
 
 .pulsante:active {
     background-color: #ccc;
-    transform: translateY(2px);
+    transform: translateY(3px);
 }
 
 input::placeholder {
