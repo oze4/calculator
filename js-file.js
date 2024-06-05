@@ -1,3 +1,76 @@
+const numberElements = document.querySelectorAll("[data-number]");
+const operatorElements = document.querySelectorAll("[data-operator]");
+const decimalElement = document.querySelector("#decimal");
+const screenElement = document.querySelector("#screen");
+const deleteElement = document.querySelector("#delete");
+const equalElement = document.querySelector("#equal");
+const clearElement = document.querySelector("#reset");
+
+let IS_DISPLAYING_ANSWER = false;
+
+const calculator = new Calculator();
+
+numberElements.forEach((number) => {
+    number.addEventListener("click", (event) => {
+        const value = event.target.getAttribute("data-number");
+
+        if (IS_DISPLAYING_ANSWER) {
+            calculator.clear();
+            screenElement.value = value;
+        } else {
+            screenElement.value += value;
+        }
+
+        calculator.pressDigit(value);
+        IS_DISPLAYING_ANSWER = false;
+    });
+});
+
+operatorElements.forEach((operator) => {
+    operator.addEventListener("click", (event) => {
+        const value = event.target.getAttribute("data-operator");
+        calculator.pressOperator(value);
+        screenElement.value += " " + value + " ";
+        IS_DISPLAYING_ANSWER = false;
+    });
+});
+
+decimalElement.addEventListener("click", (event) => {
+    if (IS_DISPLAYING_ANSWER) {
+        calculator.clear();
+        screenElement.value = ".";
+    } else {
+        screenElement.value += ".";
+    }
+
+    calculator.pressDecimal();
+    IS_DISPLAYING_ANSWER = false;
+});
+
+deleteElement.addEventListener("click", (event) => {
+    let deleteLength = 1;
+    // If we are monitoring an operator, we need to delete the spaces plus the operator itself.
+    if (calculator.isMonitoringOperator()) {
+        deleteLength = 3;
+    }
+
+    const finalDeleteLength = screenElement.value.length - deleteLength;
+    screenElement.value = screenElement.value.substring(0, finalDeleteLength);
+    calculator.pressDelete();
+    IS_DISPLAYING_ANSWER = false;
+});
+
+equalElement.addEventListener("click", (event) => {
+    screenElement.value = calculator.pressEquals();
+    IS_DISPLAYING_ANSWER = true;
+});
+
+clearElement.addEventListener("click", (event) => {
+    calculator.clear();
+    screenElement.value = null;
+});
+
+/*
 const monitor = document.querySelector("#screen");
 
 let firstNumber = "";
@@ -171,3 +244,4 @@ document.addEventListener('keydown', (event) => {
         }
     }
 });
+*/
