@@ -61,7 +61,7 @@ deleteElement.addEventListener("click", (event) => {
 });
 
 equalElement.addEventListener("click", (event) => {
-    screenElement.value = calculator.pressEquals();
+    screenElement.value = calculator.calculate();
     IS_DISPLAYING_ANSWER = true;
 });
 

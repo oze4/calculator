@@ -1,3 +1,15 @@
+// Class to help us with order of operations.
+// Helps us to generate a tree structure via our calculation array.
+class CalculationNode {
+    constructor({ value, operation, left, right, parent } = {}) {
+        this.value = value;
+        this.operation = operation;
+        this.left = left;
+        this.right = right;
+        this.parent = parent;
+    }
+}
+
 /**
  * Calculator "class"
  */
@@ -68,41 +80,123 @@ function Calculator() {
         }
     };
 
-    this.pressEquals = function () {
+    /**
+     * A HUGE SHOUT OUT TO THIS ARTICLE : 
+     * https://www.antoniovdlc.me/implementing-a-basic-calculator-in-javascript-the-hard-way/
+     */
+    this.calculate = function () {
+        // Make sure all numbers are included in calculation
         if (this.monitoring && !this.isMonitoringOperator()) {
             this.calculation.push(this.monitoring);
         }
 
-        let calc = parseFloat(this.calculation[0]);
-        let operation = "";
+        let root = new CalculationNode();
+        let currentNode = root;
 
-        for (let i = 1; i < this.calculation.length; i++) {
+        for (let i = 0, length = this.calculation.length; i < length; i++) {
             let current = this.calculation[i];
+            // OPERATORS
             if (this.isOperator(current)) {
-                operation = current;
-                continue;
-            }
-            current = parseFloat(current);
-            if (operation === "+") {
-                calc += current;
-            } else if (operation === "-") {
-                calc -= current;
-            } else if (operation === "/") {
-                calc /= current;
+                if (!currentNode.operation) {
+                    currentNode.operation = current;
+                } else {
+                    const newNode = new CalculationNode({ operation: current });
+                    // Put our new node above the currentNode in our tree, as to follow the order of operations.
+                    if (this.isAdditionOrSubtraction(currentNode.operation) && this.isMultiplicationOrDivision(newNode.operation)) {
+                        newNode.left = currentNode.right;
+                        currentNode.right = newNode;
+                        newNode.parent = currentNode;
+                        // If both our current node and new node are using multiplication or division
+                    } else if (this.isMultiplicationOrDivision(currentNode.operation) && this.isMultiplicationOrDivision(newNode.operation)) {
+                        // If the current node we are processing is the root, we can make the new node the root, 
+                        // as the order of those operations don't matter. 
+                        // If the current node is not the root, we need to locally do the same operation, 
+                        // hence the need to keep track of parent nodes as well!
+                        if (!currentNode.parent) { // current node is the root node
+                            newNode.left = currentNode;
+                            currentNode.parent = newNode;
+                            root = newNode;
+                        } else { // current node is not the root node
+                            currentNode.parent.right = newNode;
+                            newNode.parent = currentNode.parent;
+                            newNode.left = currentNode;
+                        }
+                    } else {
+                        // To finish the construction of the tree, we need to deal with the case where 
+                        // we have successive + and - operations. This case is similar to the previous
+                        // when it happens at the root, but because of the rules of arithmetic, here
+                        // we always update the root node, as the current node will always be at the root.
+                        newNode.left = root;
+                        root.parent = newNode;
+                        root = newNode;
+                    }
+                    // Assign our new node as the current, so we can continue constructing our tree.
+                    currentNode = newNode;
+                }
             } else {
-                // Multiplication is all that is left
-                calc *= current;
+                // NUMBERS
+                let number = parseFloat(current);
+                if (currentNode.left == null) {
+                    currentNode.left = new CalculationNode({ value: number });
+                } else if (currentNode.right == null) {
+                    currentNode.right = new CalculationNode({ value: number });
+                }
             }
         }
 
-        this.monitoring = String(calc);
+        /**
+         * HELPER FUNCTION SO WE CAN USE RECURSION
+         * Don't want to make this func a member of our Calculator class,
+         * so people don't accidentally use it or confuse it with "this.calculate()"
+         * 
+         * @param {CalculationNode} root root node of calculate node tree
+         */
+        function compute(root) {
+            if (root.value !== null && root.value !== undefined) {
+                return root.value;
+            }
+            if (root.operation) {
+                let left = compute(root.left);
+                let right = compute(root.right);
+                switch (root.operation) {
+                    case "+":
+                        return left + right;
+                    case "-":
+                        return left - right;
+                    case "*":
+                        return left * right;
+                    case "/":
+                        return left / right;
+                }
+            }
+        };
+
+        // Reset calculation
         this.calculation = [];
-        return calc;
+
+        // If someone just types a single number and hits "=" we just return that same number.
+        if (!root.operation) {
+            // Set current monitoring to the result of our calculation
+            this.monitoring = String(root.left.value);
+            return root.left.value;
+        }
+        const result = compute(root);
+        // Set current monitoring to the result of our calculation.
+        this.monitoring = String(result);
+        return result;
     };
 
     this.clear = function () {
         this.monitoring = undefined;
         this.calculation = [];
+    };
+
+    this.isMultiplicationOrDivision = function (x) {
+        return ["*", "/"].includes(x);
+    };
+
+    this.isAdditionOrSubtraction = function (x) {
+        return ["+", "-"].includes(x);
     };
 
     this.isMonitoringOperator = function () {
