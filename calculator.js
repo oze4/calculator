@@ -169,7 +169,7 @@ function Calculator() {
                 }
             } else {
                 // NUMBERS
-                let number = parseFloat(current);
+                const number = parseFloat(current);
                 if (currentNode.left == null) {
                     currentNode.left = new CalculationNode({ value: number });
                 } else if (currentNode.right == null) {
@@ -190,8 +190,8 @@ function Calculator() {
                 return root.value;
             }
             if (root.operation) {
-                let left = compute(root.left);
-                let right = compute(root.right);
+                const left = compute(root.left);
+                const right = compute(root.right);
                 switch (root.operation) {
                     case "+":
                         return left + right;
