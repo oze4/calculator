@@ -83,6 +83,40 @@ function Calculator() {
     /**
      * A HUGE SHOUT OUT TO THIS ARTICLE : 
      * https://www.antoniovdlc.me/implementing-a-basic-calculator-in-javascript-the-hard-way/
+     * 
+     * Some examples of what the "calculation tree" will look like:
+     * 
+     *  - If `this.calculation = [2, "+", 2]` then the final tree will look like:
+     *                          +
+     *                        /   \
+     *                      2       2
+     * 
+     *  - If `this.calculation = [5, "+", 4, "*", 3]` then the final tree will look like:
+     *                              +
+     *                            /   \
+     *                           5     *
+     *                                /  \
+     *                               4    3
+     * 
+     *  - If `this.calculation = [34, "/", 5, "+", 12, "*", 3, "/", 2, "-", 6, "+", 33, "/", 3, "+", 13]` 
+     *    then the final tree will look like: (a forward slash in quotes means divide)
+     *                                            +
+     *                                         /     \
+     *                                        +       13
+     *                                       /   \
+     *                                      -     \  
+     *                                     / \     \
+     *                                    +   6     \
+     *                                   /  \       "/"
+     *                                 "/"   \      / \
+     *                                 / \    \   33   3
+     *                               34   5    \
+     *                                         "/"
+     *                                        /   \
+     *                                       *      2
+     *                                     /  \
+     *                                    12   3
+     * 
      */
     this.calculate = function () {
         // Make sure all numbers are included in calculation
